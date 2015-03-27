@@ -90,7 +90,7 @@ module FFMPEG
       end
 
       @invalid = true if metadata.key?(:error)
-      @invalid = true if std_error.include?("Unsupported codec")
+      @invalid = true if std_error.include?("Unsupported codec") && !audio_stream && !video_stream
       @invalid = true if std_error.include?("is not supported")
       @invalid = true if std_error.include?("could not find codec parameters")
     end
