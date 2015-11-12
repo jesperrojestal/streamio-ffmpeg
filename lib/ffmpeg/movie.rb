@@ -4,7 +4,7 @@ require 'multi_json'
 module FFMPEG
   class Movie
     attr_reader :path, :duration, :time, :bitrate, :rotation, :creation_time
-    attr_reader :video_stream, :video_codec, :video_bitrate, :colorspace, :width, :height, :sar, :dar, :frame_rate
+    attr_reader :video_stream, :video_codec, :video_bitrate, :video_profile, :colorspace, :width, :height, :sar, :dar, :frame_rate
     attr_reader :audio_stream, :audio_codec, :audio_bitrate, :audio_sample_rate, :audio_channels
     attr_reader :container
 
@@ -54,6 +54,7 @@ module FFMPEG
           # TODO: Handle multiple video codecs (is that possible?)
           video_stream = video_streams.first
           @video_codec = video_stream[:codec_name]
+          @video_profile = video_stream[:profile] if video_stream[:profile]
           @colorspace = video_stream[:pix_fmt]
           @width = video_stream[:width]
           @height = video_stream[:height]
