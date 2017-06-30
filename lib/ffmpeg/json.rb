@@ -30,7 +30,7 @@ module FFMPEG
         begin
           Rational(obj)
         rescue ZeroDivisionError
-          obj
+          0
         end
       else
         obj
