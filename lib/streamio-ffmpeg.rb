@@ -7,9 +7,11 @@ require 'ffmpeg/version'
 require 'ffmpeg/errors'
 require 'ffmpeg/movie'
 require 'ffmpeg/io_monkey'
+require 'ffmpeg/json'
 require 'ffmpeg/transcoder'
 require 'ffmpeg/encoding_options'
 
+# Main namespace
 module FFMPEG
   # FFMPEG logs information about its progress when it's transcoding.
   # Jack in your own logger through this method if you wish to.
@@ -79,10 +81,10 @@ module FFMPEG
   def self.which(cmd)
     exts = ENV['PATHEXT'] ? ENV['PATHEXT'].split(';') : ['']
     ENV['PATH'].split(File::PATH_SEPARATOR).each do |path|
-      exts.each { |ext|
+      exts.each do |ext|
         exe = File.join(path, "#{cmd}#{ext}")
         return exe if File.executable? exe
-      }
+      end
     end
     raise Errno::ENOENT, "the #{cmd} binary could not be found in #{ENV['PATH']}"
   end

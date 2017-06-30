@@ -16,22 +16,27 @@ module FFMPEG
       other = params - codecs - presets
       params = codecs + presets + other
 
-      params_string = params.join(" ")
+      params_string = params.join(' ')
       params_string << " #{convert_aspect(calculate_aspect)}" if calculate_aspect?
       params_string
     end
 
     def width
-      self[:resolution].split("x").first.to_i rescue nil
+      self[:resolution].split('x').first.to_i
+    rescue
+      nil
     end
 
     def height
-      self[:resolution].split("x").last.to_i rescue nil
+      self[:resolution].split('x').last.to_i
+    rescue
+      nil
     end
 
     private
+
     def supports_option?(option)
-      option = RUBY_VERSION < "1.9" ? "convert_#{option}" : "convert_#{option}".to_sym
+      option = RUBY_VERSION < '1.9' ? "convert_#{option}" : "convert_#{option}".to_sym
       private_methods.include?(option)
     end
 
@@ -40,7 +45,7 @@ module FFMPEG
     end
 
     def calculate_aspect
-      width, height = self[:resolution].split("x")
+      width, height = self[:resolution].split('x')
       width.to_f / height.to_f
     end
 
@@ -125,7 +130,7 @@ module FFMPEG
     end
 
     def convert_screenshot(value)
-      value ? "-vframes 1 -f image2" : ""
+      value ? '-vframes 1 -f image2' : ''
     end
 
     def convert_x264_vprofile(value)
@@ -142,15 +147,15 @@ module FFMPEG
 
     def convert_watermark_filter(value)
       case value[:position].to_s
-      when "LT"
+      when 'LT'
         "-filter_complex 'scale=#{self[:resolution]},overlay=x=#{value[:padding_x]}:y=#{value[:padding_y]}'"
-      when "RT"
+      when 'RT'
         "-filter_complex 'scale=#{self[:resolution]},overlay=x=main_w-overlay_w-#{value[:padding_x]}:y=#{value[:padding_y]}'"
-      when "LB"
+      when 'LB'
         "-filter_complex 'scale=#{self[:resolution]},overlay=x=#{value[:padding_x]}:y=main_h-overlay_h-#{value[:padding_y]}'"
-      when "RB"
+      when 'RB'
         "-filter_complex 'scale=#{self[:resolution]},overlay=x=main_w-overlay_w-#{value[:padding_x]}:y=main_h-overlay_h-#{value[:padding_y]}'"
-      end  
+      end
     end
 
     def convert_custom(value)
@@ -158,7 +163,7 @@ module FFMPEG
     end
 
     def k_format(value)
-      value.to_s.include?("k") ? value : "#{value}k"
+      value.to_s.include?('k') ? value : "#{value}k"
     end
   end
 end
